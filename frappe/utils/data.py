@@ -21,6 +21,7 @@ from click import secho
 from dateutil import parser
 from dateutil.parser import ParserError
 from dateutil.relativedelta import relativedelta
+import cn2an
 
 import frappe
 from frappe.desk.utils import slug
@@ -1351,6 +1352,10 @@ def money_in_words(
 	fraction_length = get_number_format_info(number_format)[2]
 
 	n = f"%.{fraction_length}f" % number
+
+	if frappe.local.lang == "zh":
+		out = _(main_currency, context="Currency") + " " + cn2an.an2cn(n, "rmb")
+		return out
 
 	numbers = n.split(".")
 	main, fraction = numbers if len(numbers) > 1 else [n, "00"]
