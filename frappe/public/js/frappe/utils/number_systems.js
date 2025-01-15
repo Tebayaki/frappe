@@ -53,4 +53,18 @@ export default {
 			symbol: __("K", null, "Number system"),
 		},
 	],
+	china: [
+		{
+			divisor: 1.0e12,
+			symbol: __("Zhao", null, "Number system"),
+		},
+		{
+			divisor: 1.0e8,
+			symbol: __("Yi", null, "Number system"),
+		},
+		{
+			divisor: 1.0e4,
+			symbol: __("Wan", null, "Number system"),
+		},
+	],
 };
