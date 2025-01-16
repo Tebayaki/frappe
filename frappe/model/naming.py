@@ -467,7 +467,7 @@ def validate_name(doctype: str, name: int | str):
 		frappe.throw(
 			_("There were some errors setting the name, please contact the administrator"), frappe.NameError
 		)
-	name = name.strip()
+	name = frappe.utils.normalize_name(name)
 
 	if not frappe.get_meta(doctype).get("issingle") and (doctype == name) and (name != "DocType"):
 		frappe.throw(_("Name of {0} cannot be {1}").format(doctype, name), frappe.NameError)

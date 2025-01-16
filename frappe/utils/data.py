@@ -53,6 +53,7 @@ URL_NOTATION_PATTERN = re.compile(
 DURATION_PATTERN = re.compile(r"^(?:(\d+d)?((^|\s)\d+h)?((^|\s)\d+m)?((^|\s)\d+s)?)$")
 HTML_TAG_PATTERN = re.compile("<[^>]+>")
 MARIADB_SPECIFIC_COMMENT = re.compile(r"#.*")
+CONTINUOUS_SPACES_PATTERN = re.compile(r"\s+")
 
 
 class Weekday(Enum):
@@ -2280,3 +2281,35 @@ def _get_rss_memory_usage():
 
 	rss = psutil.Process().memory_info().rss // (1024 * 1024)
 	return rss
+
+
+def convert_special_char(char: str) -> str:
+	punct_map = {
+		"。": ".",
+		"（": "(",
+		"）": ")",
+		"【": "[",
+		"】": "]",
+		"“": "\"",
+		"”": "\"",
+		"‘": "'",
+		"’": "'",
+	}
+	if char in punct_map:
+		return punct_map[char]
+	code = ord(char)
+	if code == 0x3000:
+		code = 0x0020
+	else:
+		code -= 0xfee0
+	if code < 0x0020 or code > 0x7e:
+		return char
+	return chr(code)
+
+
+def strip_continuous_spaces(string: str) -> str:
+	return CONTINUOUS_SPACES_PATTERN.sub(" ", string)
+
+
+def normalize_name(string: str) -> str:
+	return "".join([convert_special_char(char) for char in strip_continuous_spaces(string).strip()])
