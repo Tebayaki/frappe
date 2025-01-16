@@ -29,8 +29,15 @@ def extract(fileobj, *args, **kwargs):
 		yield None, "_", doctype_description, ["Description of a DocType"]
 
 	messages = []
+	actions = data.get("actions", [])
 	fields = data.get("fields", [])
 	links = data.get("links", [])
+
+	for action in actions:
+		label = action.get("label")
+		if label:
+			action_type = action.get("action_type")
+			messages.append((label, f"Label of a {action_type} in DocType '{doctype}'"))
 
 	for field in fields:
 		fieldtype = field.get("fieldtype")
