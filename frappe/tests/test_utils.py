@@ -242,6 +242,14 @@ class TestMoney(FrappeTestCase):
 			("Fail", ""),
 		]
 
+		nums_cny = [
+			(5000, "人民币五千元整"),
+			(5000.0, "人民币五千元整"),
+			(0.1, "人民币壹角"),
+			(0, "人民币零元整"),
+			("Fail", ""),
+		]
+
 		for num in nums_bhd:
 			self.assertEqual(
 				money_in_words(num[0], "BHD"),
@@ -254,6 +262,13 @@ class TestMoney(FrappeTestCase):
 				money_in_words(num[0], "NGN"),
 				num[1],
 				"{} is not the same as {}".format(money_in_words(num[0], "NGN"), num[1]),
+			)
+
+		for num in nums_cny:
+			self.assertEqual(
+				money_in_words(num[0], "CNY"),
+				num[1],
+				"{} is not the same as {}".format(money_in_words(num[0], "CNY"), num[1]),
 			)
 
 
