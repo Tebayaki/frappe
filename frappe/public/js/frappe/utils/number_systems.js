@@ -53,4 +53,18 @@ export default {
 			symbol: __("K", null, "Number system"),
 		},
 	],
+	china: [
+		{
+			divisor: 1.0e12,
+			symbol: "兆",
+		},
+		{
+			divisor: 1.0e8,
+			symbol: "亿",
+		},
+		{
+			divisor: 1.0e4,
+			symbol: "万",
+		},
+	],
 };
