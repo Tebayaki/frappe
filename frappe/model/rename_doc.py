@@ -13,6 +13,7 @@ from frappe.query_builder import Field
 from frappe.utils.data import sbool
 from frappe.utils.password import rename_password
 from frappe.utils.scheduler import is_scheduler_inactive
+from frappe.utils.data import normalize_text
 
 if TYPE_CHECKING:
 	from frappe.model.meta import Meta
@@ -60,6 +61,10 @@ def update_document_title(
 
 	title_field = doc.meta.get_title_field()
 
+	if updated_title:
+		updated_title = normalize_text(updated_title)
+	if updated_name:
+		updated_name = normalize_text(updated_name)
 	title_updated = updated_title and (title_field != "name") and (updated_title != doc.get(title_field))
 	name_updated = updated_name and (updated_name != doc.name)
 
@@ -159,6 +164,7 @@ def rename_doc(
 
 	if validate:
 		old_doc = doc or frappe.get_doc(doctype, old)
+		new = normalize_text(new)
 		out = old_doc.run_method("before_rename", old, new, merge) or {}
 		new = (out.get("new") or new) if isinstance(out, dict) else (out or new)
 		new = validate_rename(

@@ -2329,3 +2329,14 @@ def _get_rss_memory_usage():
 
 	rss = psutil.Process().memory_info().rss // (1024 * 1024)
 	return rss
+
+def normalize_text(text: str) -> str:
+	"""Normalize text by removing extra spaces and replacing certain characters with their ASCII equivalents."""
+	return " ".join(text.split()).translate(
+		str.maketrans({
+			"（": "(",
+			"）": ")",
+			"【": "[",
+			"】": "]"
+		})
+	)
