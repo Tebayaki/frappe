@@ -5,6 +5,7 @@ import os.path
 
 import boto3
 from botocore.exceptions import ClientError
+from botocore.config import Config
 from rq.timeouts import JobTimeoutException
 
 import frappe
@@ -39,7 +40,7 @@ class S3BackupSettings(Document):
 		notify_email: DF.Data
 		secret_access_key: DF.Password
 		send_email_for_successful_backup: DF.Check
-
+		virtual_hosted_style: DF.Check
 	# end: auto-generated types
 
 	def validate(self):
@@ -57,6 +58,7 @@ class S3BackupSettings(Document):
 			aws_access_key_id=self.access_key_id,
 			aws_secret_access_key=self.get_password("secret_access_key"),
 			endpoint_url=self.endpoint_url,
+			config=Config(s3={"addressing_style": "virtual"}) if self.virtual_hosted_style else None
 		)
 
 		try:
@@ -145,6 +147,7 @@ def backup_to_s3():
 		aws_access_key_id=doc.access_key_id,
 		aws_secret_access_key=doc.get_password("secret_access_key"),
 		endpoint_url=doc.endpoint_url or "https://s3.amazonaws.com",
+		config=Config(s3={"addressing_style": "virtual"}) if doc.virtual_hosted_style else None
 	)
 
 	if frappe.flags.create_new_backup:

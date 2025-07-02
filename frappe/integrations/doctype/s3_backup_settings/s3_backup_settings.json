@@ -19,6 +19,7 @@
   "endpoint_url",
   "column_break_13",
   "backup_path",
+  "virtual_hosted_style",
   "backup_details_section",
   "frequency",
   "backup_files"
@@ -132,6 +133,13 @@
    "fieldname": "backup_path",
    "fieldtype": "Data",
    "label": "Backup Path"
+  },
+  {
+   "default": "0",
+   "description": "Endpoints will be addressed as such: `amzn-s3-demo-bucket.s3.amazonaws.com`",
+   "fieldname": "virtual_hosted_style",
+   "fieldtype": "Check",
+   "label": "Virtual Hosted Style"
   }
  ],
  "hide_toolbar": 1,
