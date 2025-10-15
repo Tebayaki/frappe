@@ -22,21 +22,21 @@ function prettyDate(date, mini) {
 		// Return short format of time difference
 		if (day_diff == 0) {
 			if (diff < 60) {
-				return __("now");
+				return __("now", null, "time difference");
 			} else if (diff < 3600) {
-				return __("{0} m", [Math.floor(diff / 60)]);
+				return __("{0} m", [Math.floor(diff / 60)], "time difference");
 			} else if (diff < 86400) {
-				return __("{0} h", [Math.floor(diff / 3600)]);
+				return __("{0} h", [Math.floor(diff / 3600)], "time difference");
 			}
 		} else {
 			if (day_diff < 7) {
-				return __("{0} d", [day_diff]);
+				return __("{0} d", [day_diff], "time difference");
 			} else if (day_diff < 31) {
-				return __("{0} w", [Math.floor(day_diff / 7)]);
+				return __("{0} w", [Math.floor(day_diff / 7)], "time difference");
 			} else if (day_diff < 365) {
-				return __("{0} M", [Math.floor(day_diff / 30)]);
+				return __("{0} M", [Math.floor(day_diff / 30)], "time difference");
 			} else {
-				return __("{0} y", [Math.floor(day_diff / 365)]);
+				return __("{0} y", [Math.floor(day_diff / 365)], "time difference");
 			}
 		}
 	} else {
