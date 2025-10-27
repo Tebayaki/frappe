@@ -87,7 +87,7 @@ frappe.number_format_info = {
 	"#,###": { decimal_str: "", group_sep: "," },
 };
 
-window.format_number = function (v, format, decimals) {
+window.format_number = function (v, format, decimals, fill_zero) {
 	if (!format) {
 		format = get_number_format();
 		if (decimals == null) decimals = cint(frappe.defaults.get_default("float_precision")) || 3;
@@ -104,7 +104,11 @@ window.format_number = function (v, format, decimals) {
 	if (v < 0) is_negative = true;
 	v = Math.abs(v);
 
-	v = v.toFixed(decimals);
+	if (fill_zero) {
+		v = v.toFixed(decimals);
+	} else {
+		v = String(v)
+	}
 
 	var part = v.split(".");
 
