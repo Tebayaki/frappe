@@ -1394,11 +1394,11 @@ Object.assign(frappe.utils, {
 					no_of_decimals > max_no_of_decimals
 						? result.toFixed(max_no_of_decimals)
 						: result;
-				return result + " " + map.symbol;
+				return String(Number(result)) + " " + map.symbol;
 			}
 		}
 
-		return number.toFixed(max_no_of_decimals);
+		return String(Number(number.toFixed(max_no_of_decimals)));
 	},
 
 	get_number_of_decimals: function (number) {
