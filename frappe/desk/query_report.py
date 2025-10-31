@@ -857,7 +857,7 @@ def get_column_as_dict(col):
 			if len(col) == 3:
 				col_dict["width"] = col[2]
 
-		col_dict["label"] = col[0]
+		col_dict["label"] = _(col[0])
 		col_dict["fieldname"] = frappe.scrub(col[0])
 
 	# dict
