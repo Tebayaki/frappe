@@ -394,6 +394,15 @@ class FormTimeline extends BaseTimeline {
 	get_info_timeline_contents() {
 		let info_timeline_contents = [];
 		(this.doc_info.info_logs || []).forEach((info_log) => {
+			const regex = /^renamed from <strong>(.*?)<\/strong> to <strong>(.*?)<\/strong>$|^merged <strong>(.*?)<\/strong> into <strong>(.*?)<\/strong>$/;
+			let m = regex.exec(info_log.content);
+			if (m) {
+				if (m[1]) {
+					info_log.content = __("renamed from {0} to {1}", [`<strong>${m[1]}<\/strong>`, `<strong>${m[2]}<\/strong>`]);
+				} else {
+					info_log.content = __("merged {0} into {1}", [`<strong>${m[3]}<\/strong>`, `<strong>${m[4]}<\/strong>`]);
+				}
+			}
 			info_timeline_contents.push({
 				creation: info_log.creation,
 				content: `${get_user_link(info_log.owner)} ${info_log.content}`,
