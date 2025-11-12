@@ -65,7 +65,10 @@ frappe.search.utils = {
 			if (route[0] === "Form") {
 				const doctype = route[1];
 				if (route.length > 2 && doctype !== route[2]) {
-					const docname = route[2];
+					let docname = route[2];
+					if (frappe.get_meta(doctype)?.translated_doctype) {
+						docname = __(docname);
+					}
 					out.label = __(doctype) + " " + docname.bold();
 					out.value = __(doctype) + " " + docname;
 				} else {
@@ -73,7 +76,7 @@ frappe.search.utils = {
 					out.value = __(doctype);
 				}
 			} else if (
-				["List", "Tree", "Workspaces", "query-report"].includes(route[0]) &&
+				["List", "Tree", "Workspaces", "query-report", "dashboard-view"].includes(route[0]) &&
 				route.length > 1
 			) {
 				const view_type = route[0];
@@ -94,6 +97,10 @@ frappe.search.utils = {
 					case "query-report":
 						out.label = __("{0} Report", [__(view_name).bold()]);
 						out.value = __("{0} Report", [__(view_name)]);
+						break;
+					case "dashboard-view":
+						out.label = __("{0} Dashboard", [__(view_name).bold()]);
+						out.value = __("{0} Dashboard", [__(view_name)]);
 						break;
 				}
 			} else if (match[0]) {
