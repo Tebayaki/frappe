@@ -38,29 +38,32 @@ frappe.ui.form.Toolbar = class Toolbar {
 		let title;
 		if (this.frm.is_new()) {
 			title = __("New {0}", [__(this.frm.meta.name)]);
-		} else if (this.frm.meta.title_field) {
-			let title_field = (this.frm.doc[this.frm.meta.title_field] || "").toString().trim();
-			title = strip_html(title_field || this.frm.docname);
-			if (
-				this.frm.doc.__islocal ||
-				title === this.frm.docname ||
-				this.frm.meta.autoname === "hash"
-			) {
-				this.page.set_title_sub("");
-			} else {
-				this.page.set_title_sub(this.frm.docname);
-				this.page.$sub_title_area.css("cursor", "copy");
-				this.page.$sub_title_area.on("click", (event) => {
-					event.stopImmediatePropagation();
-					frappe.utils.copy_to_clipboard(this.frm.docname);
-				});
-			}
 		} else {
-			title = this.frm.docname;
+			if (this.frm.meta.title_field) {
+				let title_field = (this.frm.doc[this.frm.meta.title_field] || "").toString().trim();
+				title = strip_html(title_field || this.frm.docname);
+				if (
+					this.frm.doc.__islocal ||
+					title === this.frm.docname ||
+					this.frm.meta.autoname === "hash"
+				) {
+					this.page.set_title_sub("");
+				} else {
+					this.page.set_title_sub(this.frm.docname);
+					this.page.$sub_title_area.css("cursor", "copy");
+					this.page.$sub_title_area.on("click", (event) => {
+						event.stopImmediatePropagation();
+						frappe.utils.copy_to_clipboard(this.frm.docname);
+					});
+				}
+			} else {
+				title = this.frm.docname;
+			}
+			if (this.frm.meta.translated_doctype) {
+				title = __(title);
+			}
 		}
 
-		var me = this;
-		title = __(title);
 		this.page.set_title(title);
 		if (this.frm.meta.title_field) {
 			frappe.utils.set_title(title + " - " + this.frm.docname);

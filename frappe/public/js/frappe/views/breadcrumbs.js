@@ -190,8 +190,10 @@ frappe.breadcrumbs = {
 		let docname_title;
 		if (docname.startsWith("new-" + doctype.toLowerCase().replace(/ /g, "-"))) {
 			docname_title = __("New {0}", [__(doctype)]);
-		} else {
+		} else if (cur_frm.meta.translated_doctype) {
 			docname_title = __(docname);
+		} else {
+			docname_title = docname
 		}
 		let form_route = `/app/${frappe.router.slug(doctype)}/${encodeURIComponent(docname)}`;
 		this.append_breadcrumb_element(form_route, docname_title);
