@@ -58,7 +58,11 @@ frappe.ui.form.PrintView = class {
 	}
 
 	set_title() {
-		this.page.set_title(__(this.frm.docname));
+		let title = this.frm.docname;
+		if (this.frm.meta.translated_doctype) {
+			title = __(title);
+		}
+		this.page.set_title(title);
 	}
 
 	setup_toolbar() {
