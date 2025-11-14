@@ -75,6 +75,18 @@ frappe.search.utils = {
 					out.label = __(doctype).bold();
 					out.value = __(doctype);
 				}
+			} else if (route[0] === "print") {
+				if (route[1]) {
+					const doctype = route[1];
+					let docname = route[2] || "";
+					if (docname && frappe.get_meta(doctype)?.translated_doctype) {
+						docname = __(docname);
+					}
+					out.label = __("Print {0} {1}", [__(doctype), docname.bold()]);
+					out.value = __("Print {0} {1}", [__(doctype), docname]);
+				} else {
+					out.label = out.value = __("Print");
+				}
 			} else if (
 				["List", "Tree", "Workspaces", "query-report", "dashboard-view"].includes(route[0]) &&
 				route.length > 1
