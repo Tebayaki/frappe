@@ -40,6 +40,7 @@ class S3BackupSettings(Document):
 		notify_email: DF.Data
 		secret_access_key: DF.Password
 		send_email_for_successful_backup: DF.Check
+		storage_class: DF.Data | None
 		virtual_hosted_style: DF.Check
 	# end: auto-generated types
 
@@ -183,18 +184,25 @@ def backup_to_s3():
 	folder = path + os.path.basename(db_filename)[:15] + "/"
 	# for adding datetime to folder name
 
-	upload_file_to_s3(db_filename, folder, conn, bucket)
-	upload_file_to_s3(site_config, folder, conn, bucket)
+	storage_class = doc.storage_class
+
+	upload_file_to_s3(db_filename, folder, conn, bucket, storage_class)
+	upload_file_to_s3(site_config, folder, conn, bucket, storage_class)
 
 	if backup_files:
 		if private_files:
-			upload_file_to_s3(private_files, folder, conn, bucket)
+			upload_file_to_s3(private_files, folder, conn, bucket, storage_class)
 
 		if files_filename:
-			upload_file_to_s3(files_filename, folder, conn, bucket)
+			upload_file_to_s3(files_filename, folder, conn, bucket, storage_class)
 
 
-def upload_file_to_s3(filename, folder, conn, bucket):
+def upload_file_to_s3(filename, folder, conn, bucket, storage_class=None):
 	destpath = os.path.join(folder, os.path.basename(filename))
 	print("Uploading file:", filename)
-	conn.upload_file(filename, bucket, destpath)  # Requires PutObject permission
+	conn.upload_file(
+		filename,
+		bucket,
+		destpath,
+		ExtraArgs={"StorageClass": storage_class} if storage_class else None,
+	)  # Requires PutObject permission

@@ -19,6 +19,7 @@
   "endpoint_url",
   "column_break_13",
   "backup_path",
+  "storage_class",
   "virtual_hosted_style",
   "backup_details_section",
   "frequency",
@@ -140,6 +141,11 @@
    "fieldname": "virtual_hosted_style",
    "fieldtype": "Check",
    "label": "Virtual Hosted Style"
+  },
+  {
+   "fieldname": "storage_class",
+   "fieldtype": "Data",
+   "label": "Storage Class"
   }
  ],
  "hide_toolbar": 1,
