@@ -82,7 +82,7 @@ export default class ShortcutWidget extends Widget {
 
 		let filters = frappe.utils.process_filter_expression(this.stats_filter);
 
-		if (this.type == "DocType" && this.doc_view != "New" && filters) {
+		if (this.type == "DocType" && this.doc_view != "New" && filters.length && this.format) {
 			frappe.db
 				.count(this.link_to, {
 					filters: filters,
@@ -92,12 +92,7 @@ export default class ShortcutWidget extends Widget {
 	}
 
 	set_count(count) {
-		const get_label = () => {
-			if (this.format) {
-				return __(this.format).replace(/{}/g, count);
-			}
-			return count;
-		};
+		const get_label = () => __(this.format).replace(/{}/g, count);
 
 		this.action_area.empty();
 		const label = get_label();
